@@ -8,6 +8,8 @@ use App\Http\Requests\StoreClient;
 use App\Http\Requests\UpdateClient;
 use App\Services\Contracts\ClientServiceContract;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ClientController extends Controller
 {
@@ -25,6 +27,11 @@ class ClientController extends Controller
     public function index(): JsonResponse
     {
         $clients = $this->clientService->all();
+        Log::info('API call.', [
+            'user_id' => Auth::id(),
+            'user_email' => Auth::user()->email,
+            'operation' => 'Get all clients.'
+        ]);
         return response()->json($clients);
     }
 
@@ -37,6 +44,12 @@ class ClientController extends Controller
     {
         $attributes = $request->all();
         $client = $this->clientService->store($attributes);
+        Log::info('API call.', [
+            'user_id' => Auth::id(),
+            'user_email' => Auth::user()->email,
+            'operation' => 'Store client.',
+            'attributes' => $attributes
+        ]);
         return response()->json($client);
     }
 
@@ -48,6 +61,11 @@ class ClientController extends Controller
     public function show(int $id): JsonResponse
     {
         $client = $this->clientService->find($id);
+        Log::info('API call.', [
+            'user_id' => Auth::id(),
+            'user_email' => Auth::user()->email,
+            'operation' => 'Show client.'
+        ]);
         return response()->json($client);
     }
 
@@ -61,6 +79,12 @@ class ClientController extends Controller
     {
         $attributes = $request->all();
         $client = $this->clientService->update($id, $attributes);
+        Log::info('API call.', [
+            'user_id' => Auth::id(),
+            'user_email' => Auth::user()->email,
+            'operation' => 'Update client.',
+            'attributes' => $attributes
+        ]);
         return response()->json($client);
     }
 
@@ -72,6 +96,12 @@ class ClientController extends Controller
     public function destroy($id): JsonResponse
     {
         $this->clientService->destroy($id);
+        Log::info('API call.', [
+            'user_id' => Auth::id(),
+            'user_email' => Auth::user()->email,
+            'operation' => 'Delete client.',
+            'client_id' => $id
+        ]);
         return response()->json([
             'result' => true
         ]);
@@ -85,6 +115,12 @@ class ClientController extends Controller
     public function search(SearchClient $request)
     {
         $params = $request->all();
+        Log::info('API call.', [
+            'user_id' => Auth::id(),
+            'user_email' => Auth::user()->email,
+            'operation' => 'Search client.',
+            'params' => $params
+        ]);
         return $this->clientService->search($params);
     }
 }

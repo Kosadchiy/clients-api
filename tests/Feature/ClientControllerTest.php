@@ -5,12 +5,19 @@ namespace Tests\Feature;
 use App\Client;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class ClientControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Log::shouldReceive('info');
+    }
     
     public function testGetAllClients()
     {
