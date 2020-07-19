@@ -19,7 +19,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::namespace('API')->group(function () {
+    Route::get('clients/search', 'ClientController@search');
     Route::apiResource('clients', 'ClientController');
+
     Route::apiResource('clients.phones', 'ClientPhoneController')->only([
         'index', 'update', 'destroy'
     ]);

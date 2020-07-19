@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SearchClient;
 use App\Http\Requests\StoreClient;
 use App\Http\Requests\UpdateClient;
 use App\Services\Contracts\ClientServiceContract;
@@ -74,5 +75,16 @@ class ClientController extends Controller
         return response()->json([
             'result' => true
         ]);
+    }
+
+    /**
+     *
+     * @param SearchClient $request
+     * @return void
+     */
+    public function search(SearchClient $request)
+    {
+        $params = $request->all();
+        return $this->clientService->search($params);
     }
 }
