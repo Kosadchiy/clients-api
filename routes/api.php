@@ -17,3 +17,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::namespace('API')->group(function () {
+    Route::apiResource('clients', 'ClientController');
+    Route::apiResource('clients.phones', 'ClientPhoneController')->only([
+        'index', 'update', 'destroy'
+    ]);
+    Route::apiResource('clients.emails', 'ClientEmailController')->only([
+        'index', 'update', 'destroy'
+    ]);
+});
