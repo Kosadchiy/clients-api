@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateClientEmail;
 use App\Services\Contracts\ClientServiceContract;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ClientEmailController extends Controller
 {
@@ -24,6 +26,12 @@ class ClientEmailController extends Controller
     public function index(int $clientId): JsonResponse
     {
         $emails = $this->clientService->clientEmails($clientId);
+        Log::info('API call.', [
+            'user_id' => Auth::id(),
+            'user_email' => Auth::user()->email,
+            'client_id' => $clientId,
+            'operation' => 'Get clients emails.'
+        ]);
         return response()->json($emails);
     }
 
@@ -38,6 +46,13 @@ class ClientEmailController extends Controller
     {
         $attributes = $request->all();
         $client = $this->clientService->updateEmail($clientId, $id, $attributes);
+        Log::info('API call.', [
+            'user_id' => Auth::id(),
+            'user_email' => Auth::user()->email,
+            'client_id' => $clientId,
+            'email_id' => $id,
+            'operation' => 'Update clients email.'
+        ]);
         return response()->json($client);
     }
 
@@ -50,6 +65,13 @@ class ClientEmailController extends Controller
     public function destroy(int $clientId, int $id): JsonResponse
     {
         $client = $this->clientService->removeEmail($clientId, $id);
+        Log::info('API call.', [
+            'user_id' => Auth::id(),
+            'user_email' => Auth::user()->email,
+            'client_id' => $clientId,
+            'email_id' => $id,
+            'operation' => 'Delete clients email.'
+        ]);
         return response()->json($client);
     }
 }
